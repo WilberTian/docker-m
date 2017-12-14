@@ -10,8 +10,6 @@ type LoginVo struct {
 	Username string `json:"username"`
 }
 
-
-
 type LoginController struct {
 	beego.Controller
 }

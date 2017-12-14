@@ -1,21 +1,54 @@
 package controllers
 
 import (
+	"encoding/json"
+
 	"github.com/astaxie/beego"
 
 	"docker-m/utils"
+
+	"docker-m/vos"
 )
 
 type ContainerController struct {
 	beego.Controller
 }
 
+type PortVo struct {
+	PrivatePort int64  
+	PublicPort int64  
+	Type string 
+	IP string 
+}
+
+type ContainerVo struct {
+	ID string            
+	Image string            
+	Command string            
+	Created int64             
+	State string            
+	Status string            
+	Ports []PortVo                
+	Names []string          
+}
 
 func (this *ContainerController) GetContainers() {
 	address := "/containers/json"
 	address = address + "?" + utils.GetQueryString(this.Ctx.Input.URI())
 	result := utils.InitDockerConnection(address, "GET")
-	this.Ctx.WriteString(result)
+
+	var containers []ContainerVo
+	json.Unmarshal([]byte(result), &containers)
+
+	responseVo := vos.ResponseVo {
+		Code: 200,
+		Message: "",
+		Data: containers,
+	    Success: true,
+	}
+
+	this.Data["json"] = &responseVo
+    this.ServeJSON()
 }
 
 func (this *ContainerController) GetContainer() {
