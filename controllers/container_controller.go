@@ -21,8 +21,8 @@ type PortVo struct {
 	IP string 
 }
 
-type ContainerVo struct {
-	ID string            
+type ContainersVo struct {
+	ID string `json:"Id"`
 	Image string            
 	Command string            
 	Created int64             
@@ -37,7 +37,7 @@ func (this *ContainerController) GetContainers() {
 	address = address + "?" + utils.GetQueryString(this.Ctx.Input.URI())
 	result := utils.InitDockerConnection(address, "GET")
 
-	var containers []ContainerVo
+	var containers []ContainersVo
 	json.Unmarshal([]byte(result), &containers)
 
 	responseVo := vos.ResponseVo {
