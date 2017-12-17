@@ -10,7 +10,6 @@ type MiscController struct {
 	beego.Controller
 }
 
-
 func (this *MiscController) GetVersion() {
 	address := "/version"
 	result := utils.InitDockerConnection(address, "GET")
@@ -46,4 +45,3 @@ func (this *MiscController) Ping() {
 	result := utils.InitDockerConnection(address, "GET")
 	this.Ctx.WriteString(result)
 }
-

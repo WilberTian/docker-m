@@ -3,6 +3,8 @@ package controllers
 import (
 	"encoding/json"
 
+	"time"
+
 	"github.com/astaxie/beego"
 
 	"docker-m/utils"
@@ -15,21 +17,72 @@ type ContainerController struct {
 }
 
 type PortVo struct {
-	PrivatePort int64  
-	PublicPort int64  
-	Type string 
-	IP string 
+	PrivatePort int64
+	PublicPort  int64
+	Type        string
+	IP          string
 }
 
 type ContainersVo struct {
-	ID string `json:"Id"`
-	Image string            
-	Command string            
-	Created int64             
-	State string            
-	Status string            
-	Ports []PortVo                
-	Names []string          
+	ID      string `json:"Id"`
+	Image   string
+	Command string
+	Created int64
+	State   string
+	Status  string
+	Ports   []PortVo
+	Names   []string
+}
+
+type ContainerNetworkVo struct {
+	Aliases             []string
+	MacAddress          string
+	GlobalIPv6PrefixLen int
+	GlobalIPv6Address   string
+	IPv6Gateway         string
+	IPPrefixLen         int
+	IPAddress           string
+	Gateway             string
+	EndpointID          string
+	NetworkID           string
+}
+
+type PortBindingVo struct {
+	HostIP   string
+	HostPort string
+}
+
+type NetworkSettingsVo struct {
+	Networks               map[string]ContainerNetworkVo
+	IPAddress              string
+	IPPrefixLen            int
+	MacAddress             string
+	Gateway                string
+	Bridge                 string
+	Ports                  map[PortVo][]PortBindingVo
+	NetworkID              string
+	EndpointID             string
+	SandboxKey             string
+	GlobalIPv6Address      string
+	GlobalIPv6PrefixLen    int
+	IPv6Gateway            string
+	LinkLocalIPv6Address   string
+	LinkLocalIPv6PrefixLen int
+	SecondaryIPAddresses   []string
+	SecondaryIPv6Addresses []string
+}
+
+
+type ContainerDetailVo struct {
+	ID      		string `json:"Id"`
+	Created 		time.Time
+	Path    		string
+	Args    		[]string
+	Image   		string
+	NetworkSettings *NetworkSettingsVo
+	Name            string
+	Driver          string
+	Volumes         map[string]string
 }
 
 func (this *ContainerController) GetContainers() {
@@ -40,22 +93,35 @@ func (this *ContainerController) GetContainers() {
 	var containers []ContainersVo
 	json.Unmarshal([]byte(result), &containers)
 
-	responseVo := vos.ResponseVo {
-		Code: 200,
+	responseVo := vos.ResponseVo{
+		Code:    200,
 		Message: "",
-		Data: containers,
-	    Success: true,
+		Data:    containers,
+		Success: true,
 	}
 
 	this.Data["json"] = &responseVo
-    this.ServeJSON()
+	this.ServeJSON()
 }
 
 func (this *ContainerController) GetContainer() {
 	id := this.GetString(":id")
 	address := "/containers/" + id + "/json"
 	result := utils.InitDockerConnection(address, "GET")
-	this.Ctx.WriteString(result)
+
+	var containerDetail ContainerDetailVo
+	
+	json.Unmarshal([]byte(result), &containerDetail)
+
+	responseVo := vos.ResponseVo{
+		Code:    200,
+		Message: "",
+		Data:    containerDetail,
+		Success: true,
+	}
+
+	this.Data["json"] = &responseVo
+	this.ServeJSON()
 }
 
 func (this *ContainerController) TopContainer() {

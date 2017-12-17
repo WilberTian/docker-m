@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-
 func InitDockerConnection(address, method string) string {
 	DOCKER_UNIX_SOCKET := "unix:///var/run/docker.sock"
 	unix_socket_url := DOCKER_UNIX_SOCKET + ":" + address

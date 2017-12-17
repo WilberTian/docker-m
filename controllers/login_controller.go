@@ -15,17 +15,17 @@ type LoginController struct {
 }
 
 func (this *LoginController) ValidateLogin() {
-	loginVo := LoginVo {
+	loginVo := LoginVo{
 		Username: "wilber",
 	}
 
-	responseVo := vos.ResponseVo {
-		Code: 200,
+	responseVo := vos.ResponseVo{
+		Code:    200,
 		Message: "",
-		Data: loginVo,
-	    Success: true,
+		Data:    loginVo,
+		Success: true,
 	}
 
 	this.Data["json"] = &responseVo
-    this.ServeJSON()
+	this.ServeJSON()
 }
