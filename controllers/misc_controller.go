@@ -1,5 +1,6 @@
 package controllers
 
+/*
 import (
 	"github.com/astaxie/beego"
 
@@ -28,7 +29,7 @@ func (this *MiscController) GetSearchImages() {
 	result := utils.InitDockerConnection(address, "GET")
 	this.Ctx.WriteString(result)
 }
-
+*/
 /* Todo: Implement events API, the response is a stream so can't use ioutil.ReadAll() which will be blocked
 func (this *MiscController) GetEvents() {
 	address := "/events"
@@ -39,9 +40,10 @@ func (this *MiscController) GetEvents() {
 	this.Ctx.WriteString(result)
 }
 */
-
+/*
 func (this *MiscController) Ping() {
 	address := "/_ping"
 	result := utils.InitDockerConnection(address, "GET")
 	this.Ctx.WriteString(result)
 }
+*/
