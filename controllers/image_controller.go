@@ -6,6 +6,8 @@ import (
 	"docker-m/vos"
 
 	"docker-m/services"
+
+	"docker-m/utils"
 )
 
 type ImageController struct {
@@ -32,26 +34,69 @@ func (this *ImageController) GetImages() {
 	this.ServeJSON()
 }
 
-/*
-func (this *ImageController) GetImage() {
+
+func (this *ImageController) GetImageDetail() {
 	id := this.GetString(":id")
-	address := "/images/" + id + "/json"
-	result := utils.InitDockerConnection(address, "GET")
-	this.Ctx.WriteString(result)
+
+	responseVo := vos.ResponseVo{
+		Code:    200,
+		Message: "",
+		Data:    "",
+		Success: true,
+	}
+
+	data, err := services.GetImageDetail(id)
+	if err != nil {
+		responseVo.Code = 500
+		responseVo.Message = err.Error()
+	} else {
+		responseVo.Data = data
+	}
+
+	this.Data["json"] = &responseVo
+	this.ServeJSON()
 }
 
-func (this *ImageController) GetUserImage() {
-	user := this.GetString(":user")
-	repo := this.GetString(":repo")
-	address := "/images/" + user + "/" + repo + "/json"
-	result := utils.InitDockerConnection(address, "GET")
-	this.Ctx.WriteString(result)
+func (this *ImageController) GetImageHistory() {
+	id := this.GetString(":id")
+
+	responseVo := vos.ResponseVo{
+		Code:    200,
+		Message: "",
+		Data:    "",
+		Success: true,
+	}
+
+	data, err := services.GetImageHistory(id)
+	if err != nil {
+		responseVo.Code = 500
+		responseVo.Message = err.Error()
+	} else {
+		responseVo.Data = data
+	}
+
+	this.Data["json"] = &responseVo
+	this.ServeJSON()
 }
+
 
 func (this *ImageController) DeleteImage() {
 	id := this.GetString(":id")
-	address := "/images/" + id
-	result := utils.InitDockerConnection(address, "DELETE")
-	this.Ctx.WriteString(result)
+
+	responseVo := vos.ResponseVo{
+		Code:    200,
+		Message: "",
+		Data:    "",
+		Success: true,
+	}
+
+	params := utils.GetQueryString(this.Ctx.Input.URI())
+	err := services.DeleteImage(id, params)
+	if err != nil {
+		responseVo.Code = 500
+		responseVo.Message = err.Error()
+	}
+
+	this.Data["json"] = &responseVo
+	this.ServeJSON()
 }
-*/

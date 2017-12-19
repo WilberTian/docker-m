@@ -98,9 +98,9 @@ func StartContainer(id string) error {
 
 	switch response.StatusCode {
 	case 304:
-		return &errors.AlreadyStartedError{CID: id}
+		return &errors.AlreadyStartedError{ID: id}
 	case 404:
-		return &errors.NoSuchContainerError{CID: id}
+		return &errors.NoSuchContainerError{ID: id}
 	case 500:
 		return Err.New("Server error")
 	}
@@ -125,9 +125,9 @@ func StopContainer(id string) error {
 
 	switch response.StatusCode {
 	case 304:
-		return &errors.AlreadyStoppedError{CID: id}
+		return &errors.AlreadyStoppedError{ID: id}
 	case 404:
-		return &errors.NoSuchContainerError{CID: id}
+		return &errors.NoSuchContainerError{ID: id}
 	case 500:
 		return Err.New("Server error")
 	}
@@ -152,11 +152,11 @@ func DeleteContainer(id string, params string) error {
 
 	switch response.StatusCode {
 	case 400:
-		return &errors.DeleteParamError{CID: id}
+		return &errors.DeleteParamError{ID: id}
 	case 404:
-		return &errors.NoSuchContainerError{CID: id}
+		return &errors.NoSuchContainerError{ID: id}
 	case 409:
-		return &errors.DeleteConflictError{CID: id}
+		return &errors.DeleteConflictError{ID: id}
 	case 500:
 		return Err.New("Server error")
 	}
