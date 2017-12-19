@@ -23,10 +23,7 @@ func init() {
 	beego.Router("/docker-m/images/:id/history", &controllers.ImageController{}, "get:GetImageHistory")
 	beego.Router("/docker-m/images/:id/delete", &controllers.ImageController{}, "delete:DeleteImage")
 
-	/*
-		beego.Router("/docker-m/version", &controllers.MiscController{}, "get:GetVersion")
-		beego.Router("/docker-m/info", &controllers.MiscController{}, "get:GetInfo")
-		// beego.Router("/docker-m/events", &controllers.DockerapiController{}, "get:GetEvents") // Not support yet
-		beego.Router("/docker-m/_ping", &controllers.MiscController{}, "get:Ping")
-	*/
+	beego.Router("/docker-m/version", &controllers.MiscController{}, "get:GetVersion")
+	beego.Router("/docker-m/info", &controllers.MiscController{}, "get:GetInfo")
+	beego.Router("/docker-m/_ping", &controllers.MiscController{}, "get:Ping")
 }
