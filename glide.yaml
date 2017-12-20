@@ -1,0 +1,13 @@
+package: docker-m
+import:
+- package: github.com/astaxie/beego
+  version: ~1.9.2
+- package: github.com/docker/docker
+  version: ~17.5.0-ce-rc3
+  subpackages:
+  - api/types/swarm
+testImport:
+- package: github.com/smartystreets/goconvey
+  version: ~1.6.3
+  subpackages:
+  - convey
