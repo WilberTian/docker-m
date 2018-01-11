@@ -3,8 +3,6 @@ package services
 import (
 	"encoding/json"
 
-	"strings"
-
 	Err "errors"
 
 	"docker-m/vos"
@@ -15,14 +13,14 @@ import (
 )
 
 func GetImages() ([]vos.ImagesVo, error) {
-	address := "/images"
+	address := "/images/json"
 
 	connUtil := utils.DockerConnectionUtil{}
 	if err := connUtil.InitConnection(); err != nil {
 		return nil, err
 	}
 
-	response, err := connUtil.Do("GET", address, strings.NewReader(""))
+	response, err := connUtil.Do("GET", address, nil)
 	defer response.Body.Close()
 
 	if err != nil {
@@ -84,7 +82,10 @@ func GetImageHistory(id string) ([]vos.ImageHistoryVo, error) {
 }
 
 func DeleteImage(id string, params string) error {
-	address := "/iamges/" + id + "?" + params
+	address := "/images/" + id
+	if params != "" {
+		address = address + "?" + params
+	}
 
 	connUtil := utils.DockerConnectionUtil{}
 	if err := connUtil.InitConnection(); err != nil {
